@@ -1,0 +1,15 @@
+{
+	"name": "fuel/fieldset",
+	"description" : "A Fieldset package for FuelPHP",
+	"type": "fuel-package",
+	"homepage": "https://github.com/ohnaka0410/FuelPHP-Fieldset",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "ohnaka0410"
+		}
+	],
+	"require": {
+		"composer/installers": "~1.0"
+	}
+}

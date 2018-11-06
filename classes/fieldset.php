@@ -25,77 +25,17 @@ namespace Fuel\Fieldset;
 class Fieldset extends \Fuel\Core\Fieldset
 {
 	/**
-	 * Create Fieldset object
-	 *
-	 * @param   string    $name    Identifier for this fieldset
-	 * @param   array     $config  Configuration array
-	 * @return  Fieldset
-	 */
-	public static function forge($name = null, array $config = array())
-	{
-		$name = is_null($name) ? get_called_class() : $name;
-
-		return parent::forge($name, $config);
-	}
-
-	/**
 	 * Build the field HTML Parts
 	 *
-	 * @param   mixed  $action
 	 * @return  string
 	 */
-	public function build_fields($action = null)
+	public function build_fields()
 	{
-		$form = $this->form();
-
 		$fields = array();
 
-		foreach ($this->field() as $field)
+		foreach ($this->field() as $f)
 		{
-
-			if(in_array($field->name, $this->disabled))
-			{
-				continue;
-			}
-
-			$required_mark = $field->get_attribute('required', null)
-				? $form->get_config('required_mark', null)
-				: null
-			;
-
-			$label = $field->label
-				? $form->label(
-						$field->label,
-						null,
-						array(
-							'id'    => 'label_'.$field->name,
-							'for'   => $field->get_attribute('id', null),
-							'class' => $form->get_config('label_class', null)
-						)
-					)
-				: ''
-			;
-
-			$error_template = $form->get_config('error_template', '');
-
-			$error_msg = ($form->get_config('inline_errors') && $field->error())
-				? str_replace('{error_msg}', $field->error(), $error_template)
-				: ''
-			;
-
-			$error_class = $field->error()
-				? $form->get_config('error_class')
-				: ''
-			;
-
-			$fields[$field->name] = array(
-				'label'         => $label,
-				'required_mark' => $required_mark,
-				'error_msg'     => ucfirst($error_msg),
-				'error_class'   => $error_class,
-				'field'         => $field->build(),
-				'description'   => $field->description,
-			);
+			in_array($f->name, $this->disabled) or $fields[$f->name] = $f->build_parts();
 		}
 
 		return $fields;

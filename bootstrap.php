@@ -24,5 +24,6 @@
 \Autoloader::add_core_namespace('Fuel\\Fieldset');
 
 \Autoloader::add_classes(array(
-	'Fuel\\Fieldset\\Fieldset'   => __DIR__.'/classes/fieldset.php',
+	'Fuel\\Fieldset\\Fieldset'         => __DIR__.'/classes/fieldset.php',
+	'Fuel\\Fieldset\\Fieldset_Field'   => __DIR__.'/classes/fieldset/field.php',
 ));

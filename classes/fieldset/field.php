@@ -46,6 +46,16 @@ class Fieldset_Field extends \Fuel\Core\Fieldset_Field
 		// required
 		$parts['required'] = $this->set_template('{required}')->build();
 
+		// error
+		$parts['error'] = $this->error();
+
+		if ($parts['error'])
+		{
+			$class = $this->get_attribute('class');
+			$invalid_class = $form->get_config('invalid_class', null);
+			$this->set_attribute('class', $class.' '.$invalid_class);
+		}
+
 		// field
 		$parts['field'] = $this->set_template('{field}')->build();
 
@@ -60,9 +70,6 @@ class Fieldset_Field extends \Fuel\Core\Fieldset_Field
 
 		// value
 		$parts['value'] = $this->input();
-
-		// error
-		$parts['error'] = $this->error();
 
 		// options
 		$parts['options'] = $this->options;

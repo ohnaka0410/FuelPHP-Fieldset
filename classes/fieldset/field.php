@@ -35,38 +35,29 @@ class Fieldset_Field extends \Fuel\Core\Fieldset_Field
 	{
 		$form = $this->fieldset()->form();
 
+		$template = $this->template;
 		$parts = array();
 
-		// field_template
-		$template = $this->template;
-
 		// label
-		$parts['label'] = $this->set_template('{label}')->build();
+		$parts['label'] = $this->label();
 
 		// required
-		$parts['required'] = $this->set_template('{required}')->build();
+		$parts['required'] = $this->required();
 
 		// error
 		$parts['error'] = $this->error();
 
-		if ($parts['error'])
-		{
-			$class = $this->get_attribute('class');
-			$invalid_class = $form->get_config('invalid_class', null);
-			$this->set_attribute('class', $class.' '.$invalid_class);
-		}
+		// field
+		$parts['field'] = $this->field();
 
 		// field
-		$parts['field'] = $this->set_template('{field}')->build();
-
-		// field
-		$parts['hidden'] = $form->hidden($this->name, $this->input(), $this->attributes);
+		$parts['hidden'] = $this->hidden();
 
 		// description
-		$parts['description'] = $this->set_template('{description}')->build();
+		$parts['description'] = $this->description;
 
 		// error_class
-		$parts['error_class'] = $this->set_template('{error_class}')->build();
+		$parts['error_class'] = $this->error_class();
 
 		// value
 		$parts['value'] = $this->input();
@@ -77,6 +68,118 @@ class Fieldset_Field extends \Fuel\Core\Fieldset_Field
 		$this->set_template($template);
 
 		return $parts;
+	}
+
+	/**
+	 * Build the field
+	 *
+	 * @return  string
+	 */
+	public function build()
+	{
+		$form = $this->fieldset()->form();
+		$type = $this->get_attribute('tag') ? $this->get_attribute('tag') : $this->type;
+		$class = $this->get_attribute('class');
+		if ($type_class = $form->get_config($type.'_class', null))
+		{
+			if (strpos($class, $type_class) === false)
+			{
+				$class .= ' '.$type_class;
+			}
+		}
+		$this->set_attribute('class', $class);
+		return parent::build();
+	}
+
+	/**
+	 * Build the Label HTML
+	 *
+	 * @return  string
+	 */
+	public function label()
+	{
+		$form = $this->fieldset()->form();
+		$template = $this->template;
+		$html = $this->set_template('{label}')->build();
+		$this->set_template($template);
+		return $html;
+	}
+
+	/**
+	 * Build the Required HTML
+	 *
+	 * @return  string
+	 */
+	public function required()
+	{
+		$form = $this->fieldset()->form();
+		$template = $this->template;
+		$html = $this->set_template('{required}')->build();
+		$this->set_template($template);
+		return $html;
+	}
+
+	/**
+	 * Build the Label HTML
+	 *
+	 * @return  string
+	 */
+	public function field()
+	{
+		$form = $this->fieldset()->form();
+		$template = $this->template;
+		$class = $this->get_attribute('class');
+		if ($this->error())
+		{
+			$class .= ' '.$form->get_config('invalid_class', null);
+		}
+		$this->set_attribute('class', $class);
+
+		// field
+		$html = $this->set_template('{field}')->build();
+
+		$this->set_template($template);
+
+		return $html;
+	}
+
+	/**
+	 * Build the Label HTML
+	 *
+	 * @return  string
+	 */
+	public function hidden()
+	{
+		$form = $this->fieldset()->form();
+		return $form->hidden($this->name, $this->input(), $this->attributes);
+	}
+
+	/**
+	 * Build the error message HTML
+	 *
+	 * @return  string
+	 */
+	public function error_msg()
+	{
+		$form = $this->fieldset()->form();
+		$template = $this->template;
+		$html = $this->set_template('{error_msg}')->build();
+		$this->set_template($template);
+		return $html;
+	}
+
+	/**
+	 * Build the error class HTML
+	 *
+	 * @return  string
+	 */
+	public function error_class()
+	{
+		$form = $this->fieldset()->form();
+		$template = $this->template;
+		$html = $this->set_template('{error_class}')->build();
+		$this->set_template($template);
+		return $html;
 	}
 }
 
